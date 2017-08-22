@@ -1,54 +1,63 @@
-## Project: Build a Traffic Sign Recognition Program
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+#**Traffic Sign Recognition Writeup**
 
-Overview
----
-In this project, you will use what you've learned about deep neural networks and convolutional neural networks to classify traffic signs. You will train and validate a model so it can classify traffic sign images using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, you will then try out your model on images of German traffic signs that you find on the web.
+**Build a Traffic Sign Recognition Project**
 
-We have included an Ipython notebook that contains further instructions 
-and starter code. Be sure to download the [Ipython notebook](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). 
-
-We also want you to create a detailed writeup of the project. Check out the [writeup template](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup. The writeup can be either a markdown file or a pdf document.
-
-To meet specifications, the project will require submitting three files: 
-* the Ipython notebook with the code
-* the code exported as an html file
-* a writeup report either as a markdown or pdf file 
-
-Creating a Great Writeup
----
-A great writeup should include the [rubric points](https://review.udacity.com/#!/rubrics/481/view) as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
-
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
-
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup.
-
-The Project
----
 The goals / steps of this project are the following:
-* Load the data set
+* Load the data set (see below for links to the project data set)
 * Explore, summarize and visualize the data set
 * Design, train and test a model architecture
 * Use the model to make predictions on new images
 * Analyze the softmax probabilities of the new images
 * Summarize the results with a written report
 
-### Dependencies
-This lab requires:
+## Files submitted
+The following repository contains all the required files to review the submission
+including HTML version of the notebook.
 
-* [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit)
+The results [can be viewed here](http://htmlpreview.github.io/?https://github.com/mateuszmrozewski/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.html)
 
-The lab environment can be created with CarND Term1 Starter Kit. Click [here](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) for the details.
+## Dataset Exploration
+### Dataset Summary
+Notebook contains basic dataset summary like number of examples and classes.
+### Exploratory visualization
+I have not performed any special exploratory visualization as the dataset seems to be pretty straightforward. 
+Also taking into account that getting good results in my model was not difficult I decided not to go back to 
+that step. In case of bigger problems with model implementation I would go back and try to do more in here.
 
-### Dataset and Repository
+## Design and Test Model Architeture
 
-1. Download the data set. The classroom has a link to the data set in the "Project Instructions" content. This is a pickled dataset in which we've already resized the images to 32x32. It contains a training, validation and test set.
-2. Clone the project, which contains the Ipython notebook and the writeup template.
-```sh
-git clone https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project
-cd CarND-Traffic-Sign-Classifier-Project
-jupyter notebook Traffic_Sign_Classifier.ipynb
-```
+### Preprocessing
+As data preprocessing I only transformed the images into grayscale and normalized the images. Initially I tried with all channels 
+however I got slightly better results with grayscale.
 
-### Requirements for Submission
-Follow the instructions in the `Traffic_Sign_Classifier.ipynb` notebook and write the project report using the writeup template as a guide, `writeup_template.md`. Submit the project code and writeup document.
+### Model architecture
+As a starting point I took the LeNet from the lab. It yielded pretty good results but not good enough to complete
+the project. I decided to remove one of the fully connected layers as my intuition is that most of the 
+important things happen on the convolutions. Following that lead I have added additional convolutional
+layer and deepened the existing ones. It allowed to bump the accuracies to around 95%.
+ 
+I experiment with dropout on both convolutional layers and fully connected layers but I only experienced
+reduction of accuracy.
+
+### Model training
+I have used AdamOptimizer. Before changing the model (additional convolutional layer) I was experimenting 
+with learning rate from 0.0001 to 0.001, epochs around 40 to 50 and batch sizes 64 and 128.
+
+After adding the additional layer I bumped the learning rate up to 0.0008 and I was able to reduce number
+of epochs to 20, as the model converged much quicker. 
+
+### Solution approach
+It was a trial-and-error approach with different shapes of the model and different values of hyperparameters.
+Fortunately using GPU was fast enough for such approach.
+
+
+## Test a Model on New Images
+I have tested the model on a few images downloaded. I have to preprocess them the same way (resize to 32x32, 
+grayscale and normalize). I got 100% accuracy on the first 5 images. One of the images had to be upscaled 
+to match the 32x32 size which is a very promising result.
+ 
+## Final thoughts
+This project was an interesting follow up to the Deep Learning Nanodegree. I got a chance to practice more
+what I have learnt previously. I know that I could push it further by trying to augment the training dataset
+with additional variations of the images. However I was very satisfied with getting such a good result
+with such a simple model.
