@@ -17,12 +17,30 @@ including HTML version of the notebook.
 The results [can be viewed here](http://htmlpreview.github.io/?https://github.com/mateuszmrozewski/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.html)
 
 ## Dataset Exploration
+
 ### Dataset Summary
-Notebook contains basic dataset summary like number of examples and classes.
+Dataset can be summarized in the following manner:
+```
+Number of training examples = 34799
+Number of validation examples = 4410
+Number of testing examples = 12630
+Image data shape = (32, 32, 3)
+Number of classes = 43
+```
+
 ### Exploratory visualization
-I have not performed any special exploratory visualization as the dataset seems to be pretty straightforward. 
-Also taking into account that getting good results in my model was not difficult I decided not to go back to 
-that step. In case of bigger problems with model implementation I would go back and try to do more in here.
+For the visualization part I have displayed a histogram of classes:
+
+![Histogram](./examples/class_histogram.png)
+
+This is useful to see that not all of the classes have the same number training examples. It may
+affect our predictions. For certain types of images.
+
+Another visualization I did to display 50 random images. It is good to see some examples to get the idea
+how to actual input looks like to see that some are darker, some are lighter, some were upsampled and some
+were downsampled. You can see that images vary in quality which may affect the training process.
+
+![Example images](./examples/signs.png)
 
 ## Design and Test Model Architeture
 
