@@ -45,17 +45,33 @@ were downsampled. You can see that images vary in quality which may affect the t
 ## Design and Test Model Architeture
 
 ### Preprocessing
-As data preprocessing I only transformed the images into grayscale and normalized the images. Initially I tried with all channels 
-however I got slightly better results with grayscale.
+As data preprocessing I only transformed the images into grayscale and normalized the images.
+
+Normalizing data allows us to get better area of potential learning errors which affects the way network
+is learning. Not normalized data would produce error that make it harder for the network to converge.
+
+Grayscaling allows us to reduce the number of input parameters for the network by the factor of three. 
+In most cases we can get enough information just from the shape of sign and brightness/contract. Color
+is mostly useful for people to quickly recognize the signs.
 
 ### Model architecture
-As a starting point I took the LeNet from the lab. It yielded pretty good results but not good enough to complete
-the project. I decided to remove one of the fully connected layers as my intuition is that most of the 
-important things happen on the convolutions. Following that lead I have added additional convolutional
-layer and deepened the existing ones. It allowed to bump the accuracies to around 95%.
- 
-I experiment with dropout on both convolutional layers and fully connected layers but I only experienced
-reduction of accuracy.
+My model has the following architecture:
+
+| Layer  | Description   |
+| -------| ------------- |
+| Input  | 32x32x1 Grayscale image |
+| Convolution 5x5 | 1x1 stride, valid padding, output 28x28x20 |
+| RELU | |
+| Max pooling | 2x2 stride, output 14x14x20 |
+| Convolution 3x3 | 1x1 stride, valid padding, output 12x12x40 |
+| RELU | |
+| Convolution 3x3 | 1x1 stride, valida padding, output 10x10x80 | 
+| RELU | |
+| Max pooling | 2x2 stride, output 5x5x80 |
+| Fully connected | 2000 inputs to 120 outputs |
+| RELU |
+| Output layer | 120 inputs, 43 outputs |
+
 
 ### Model training
 I have used AdamOptimizer. Before changing the model (additional convolutional layer) I was experimenting 
@@ -65,14 +81,56 @@ After adding the additional layer I bumped the learning rate up to 0.0008 and I 
 of epochs to 20, as the model converged much quicker. 
 
 ### Solution approach
-It was a trial-and-error approach with different shapes of the model and different values of hyperparameters.
-Fortunately using GPU was fast enough for such approach.
+Initially I have started with with the LeNet solution from the laboratory exercise.
+It gave reasonable starting results. However to get more accurate results it 
+required several changes.
+
+The initial shape of the network was:
+* two convolutional layers with 5x5 filters and depth of 10 and 20 respectively
+* these layers were followed by relu activation and max pooling
+* after that we had two fully connected layers and output layer
+
+As the first step I have removed one of the fully connected layers as it seemed 
+it is not needed to generalize from the convolutions to classes (although some of 
+the best architectures for image recognition have two hidden dense layers).
+
+As the next step I started to play around with the filter size and depth of the
+convolutions. I discovered that making them deeper allowed to improve the accuracy.
+My understanding is that deeper convolution allow to catch more details from a single
+frame that the filter is looking at. Following that lead I have added one more 
+convolutional layer even deeper than the previous ones which bumped the accuracy
+by around 2%.
+
+Later it was just trail-and-error approach with different filter sizes, depth of 
+the convolutions and hyperparameters.
+
+I went with ReLU as activation from the very beginning and didn't try any other
+function.
+
+I got rid of max pooling from one of the convolutional layers as the network
+started to underfit (the middle convolution does not have max pooling).
+
 
 
 ## Test a Model on New Images
-I have tested the model on a few images downloaded. I have to preprocess them the same way (resize to 32x32, 
-grayscale and normalize). I got 100% accuracy on the first 5 images. One of the images had to be upscaled 
-to match the 32x32 size which is a very promising result.
+I have tested the model on 10 first images from the downloaded dataset.
+
+Some of the images had to be upsampled to match the size. So they quality 
+was very low:
+![low](./examples/test1.png)
+
+Some of them show some additional noise or dirt:
+![dirt](./examples/test2.png)
+
+And some of them have interesting background that could make the classification
+harder:
+![back](./examples/test3.png)
+
+The accuracy of predictions for the first 10 images is 100%. This seems to be in 
+order with the test accuracy. Even though the sample images expose interesting
+features like noise, low quality or various backgrounds they are still fairly
+easy to categorize. This leads me to thinking that the quality of the image 
+must be really poor to make the correct predictions.
  
 ## Final thoughts
 This project was an interesting follow up to the Deep Learning Nanodegree. I got a chance to practice more
