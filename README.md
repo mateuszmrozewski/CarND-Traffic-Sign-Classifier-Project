@@ -132,6 +132,9 @@ features like noise, low quality or various backgrounds they are still fairly
 easy to categorize. This leads me to thinking that the quality of the image 
 must be really poor to make the correct predictions.
  
+The accuracy of captured images is 100% while it was 94.8% on the testing
+ set thus is seems the model is overfitting.
+ 
 ## Final thoughts
 This project was an interesting follow up to the Deep Learning Nanodegree. I got a chance to practice more
 what I have learnt previously. I know that I could push it further by trying to augment the training dataset
