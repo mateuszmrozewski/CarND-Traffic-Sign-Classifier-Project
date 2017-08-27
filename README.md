@@ -132,7 +132,7 @@ features like noise, low quality or various backgrounds they are still fairly
 easy to categorize. This leads me to thinking that the quality of the image 
 must be really poor to make the correct predictions.
  
-The accuracy of captured images is 100% while it was 94.8% on the testing
+The accuracy of captured images is 100% while it was 95.5% on the testing
  set thus is seems the model is overfitting.
  
 The top 5 softmax probabilities also show very high confidence in the predictions
