@@ -135,6 +135,9 @@ must be really poor to make the correct predictions.
 The accuracy of captured images is 100% while it was 94.8% on the testing
  set thus is seems the model is overfitting.
  
+The top 5 softmax probabilities also show very high confidence in the predictions
+leading to the confirmation of the fact that model might be overfitting.
+ 
 ## Final thoughts
 This project was an interesting follow up to the Deep Learning Nanodegree. I got a chance to practice more
 what I have learnt previously. I know that I could push it further by trying to augment the training dataset
